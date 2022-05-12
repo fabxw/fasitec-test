@@ -21,6 +21,7 @@ class Home extends StatefulWidget {
 class _HomeState extends State<Home> {
   late List entries;
   String? count;
+  TextEditingController controller = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -39,13 +40,19 @@ class _HomeState extends State<Home> {
             case ConnectionState.none:
             case ConnectionState.waiting:
               return Center(
-                child: Text(
-                  "Carregando Dados",
-                  style: TextStyle(
-                      color: Color.fromARGB(255, 0, 0, 0), fontSize: 25),
-                  textAlign: TextAlign.center,
-                ),
-              );
+                  child: Column(
+                crossAxisAlignment: CrossAxisAlignment.center,
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: const [
+                  Text(
+                    "Carregando Dados",
+                    style: TextStyle(
+                        color: Color.fromARGB(255, 0, 0, 0), fontSize: 25),
+                    textAlign: TextAlign.center,
+                  ),
+                  CircularProgressIndicator()
+                ],
+              ));
             default:
               if (snapshot.hasError) {
                 //debugPrint(snapshot.data?[0]);
@@ -54,6 +61,7 @@ class _HomeState extends State<Home> {
                 );
               } else {
                 entries = snapshot.data?["entries"];
+
                 return ListAPI(dataAPI: entries);
               }
           }
